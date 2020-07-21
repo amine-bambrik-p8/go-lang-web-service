@@ -15,6 +15,7 @@ func GetRoutes(w http.ResponseWriter, r *http.Request) {
 	source, dists, err := parseQuery(r.URL.Query())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	result := routesModel.AllRoutes{
