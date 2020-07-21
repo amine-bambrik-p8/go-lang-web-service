@@ -3,11 +3,11 @@ package routes
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	routesModel "go-lang-web-service/models/routes"
 	routesService "go-lang-web-service/services/routes"
 	"net/http"
 	"net/url"
+	"sort"
 )
 
 // Returns the list of Route's destances and durations starting from the given source
@@ -29,7 +29,9 @@ func GetRoutes(w http.ResponseWriter, r *http.Request) {
 		}
 		result.Routes = append(result.Routes, routes.Routes...)
 	}
-	fmt.Fprint(w, result)
+	sort.SliceStable(result.Routes, func(i, j int) bool {
+		return result.Routes[i].Duration < result.Routes[j].Duration
+	})
 	json.NewEncoder(w).Encode(result)
 }
 
