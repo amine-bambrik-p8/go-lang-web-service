@@ -3,10 +3,11 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
-	"go-lang-web-service/models"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/amine-bambrik-p8/go-lang-web-service/models"
 )
 
 type Controller struct {

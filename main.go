@@ -1,9 +1,10 @@
 package main
 
 import (
-	"go-lang-web-service/handlers"
 	"log"
 	"net/http"
+
+	"github.com/amine-bambrik-p8/go-lang-web-service/handlers"
 )
 
 /**

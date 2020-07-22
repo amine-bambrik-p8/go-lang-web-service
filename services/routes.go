@@ -1,13 +1,14 @@
 package services
 
 import (
-	"go-lang-web-service/common/async"
-	"go-lang-web-service/common/http"
+	"github.com/amine-bambrik-p8/go-lang-web-service/common/async"
+	"github.com/amine-bambrik-p8/go-lang-web-service/common/http"
 
-	"go-lang-web-service/models"
 	"log"
 	"net/url"
 	"path"
+
+	"github.com/amine-bambrik-p8/go-lang-web-service/models"
 )
 
 const BaseURL = "http://router.project-osrm.org/route/v1/driving/"

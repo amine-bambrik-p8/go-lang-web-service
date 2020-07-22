@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"errors"
-	"go-lang-web-service/common/handlers"
-	"go-lang-web-service/services"
 	"net/http"
 	"net/url"
+
+	"github.com/amine-bambrik-p8/go-lang-web-service/common/handlers"
+	"github.com/amine-bambrik-p8/go-lang-web-service/services"
 )
 
 // Controller Object for Routes model routes(endpoints)
