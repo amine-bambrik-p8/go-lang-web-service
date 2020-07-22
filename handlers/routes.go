@@ -1,20 +1,18 @@
-package routes
+package handlers
 
 import (
 	"errors"
-	"go-lang-web-service/common"
-	routesModel "go-lang-web-service/models/routes"
-	routesService "go-lang-web-service/services/routes"
-
+	"go-lang-web-service/common/handlers"
+	"go-lang-web-service/services"
 	"net/http"
 	"net/url"
 )
 
 // Controller Object for Routes model routes(endpoints)
-var Controller = &RoutesController{}
+var RoutesHandler = &RoutesController{}
 
 type RoutesController struct {
-	common.Controller
+	handlers.Controller
 }
 
 // Returns the list of Route's destances and durations starting from the given source
@@ -25,23 +23,16 @@ func (c *RoutesController) GetRoutes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := routesModel.AllRoutes{
-		Source: source,
-		Routes: make([]routesModel.RouteInfo, 0, len(dists)),
+	allRoutes, err := services.Routes.GetAllRoutes(source, dists)
+	if err != nil {
+		c.SendJSON(w, r, err, http.StatusBadRequest)
+		return
 	}
-	for _, dist := range dists {
-		routes, err := routesService.GetAllRoutes(source, dist)
-		if err != nil {
-			c.SendJSON(w, r, err, http.StatusBadRequest)
-			return
-		}
-		result.Routes = append(result.Routes, routes.Routes...)
-	}
-	result.SortByDuration()
-	c.SendJSON(w, r, result.GetViewModel(), http.StatusOK)
+	allRoutes.SortByDuration()
+	c.SendJSON(w, r, allRoutes, http.StatusOK)
 }
 
-// Parse the Query Params map and returns the source and distinations
+// Parse the Query Params map and returns the source and destinations
 func (c RoutesController) parseQuery(values url.Values) (source string, dists []string, err error) {
 	src, ok := values["src"]
 	if !ok || len(src) != 1 {

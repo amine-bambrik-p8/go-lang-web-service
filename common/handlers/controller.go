@@ -1,4 +1,4 @@
-package common
+package handlers
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 type Controller struct {
 }
 
+// Takes data and status code and sends it as JSON
 func (c *Controller) SendJSON(w http.ResponseWriter, r *http.Request, data interface{}, code int) {
 	var buf bytes.Buffer
 

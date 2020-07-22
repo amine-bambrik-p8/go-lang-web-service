@@ -1,12 +1,13 @@
-package routes
+package models
 
 import "sort"
 
-// Returns the AllRoutes to the client
+// Returns the View Model of AllRoutes
 func (r *AllRoutes) GetViewModel() interface{} {
 	return map[string]interface{}{
 		"source": r.Source,
 		"routes": r.Routes,
+		//"example": "Hello world",
 	}
 }
 
@@ -24,12 +25,14 @@ type RouteInfo struct {
 	Distance    float64 `json:"distance"`
 }
 
+// Sorts the RoutesInfo array by duration
 func (r *AllRoutes) SortByDuration() {
 	sort.SliceStable(r.Routes, func(i, j int) bool {
 		return r.Routes[i].Duration < r.Routes[j].Duration
 	})
 }
 
+// Sorts the RoutesInfo array by Distance
 func (r *AllRoutes) SortByDistance() {
 	sort.SliceStable(r.Routes, func(i, j int) bool {
 		return r.Routes[i].Distance < r.Routes[j].Distance

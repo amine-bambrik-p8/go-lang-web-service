@@ -1,0 +1,73 @@
+package services
+
+import (
+	"go-lang-web-service/common/async"
+	"go-lang-web-service/common/http"
+
+	"go-lang-web-service/models"
+	"log"
+	"net/url"
+	"path"
+)
+
+const BaseURL = "http://router.project-osrm.org/route/v1/driving/"
+
+var Routes = &RoutesService{}
+
+type RoutesService struct {
+}
+
+// Returns a list of all routes from a source to multiple possible destinations
+func (r *RoutesService) GetAllRoutes(source string, dists []string) (allRoutes *models.AllRoutes, err error) {
+	requests := make([]async.Promise, 0, len(dists))
+	for _, dist := range dists {
+		promise := async.NewPromise(func() (interface{}, error) { return r.GetRoutes(source, dist) })
+		requests = append(requests, promise)
+	}
+	promise := async.WaitAll(requests...)
+
+	routes, err := promise.Await()
+	if err != nil {
+		return
+	}
+
+	allRoutes = &models.AllRoutes{
+		Source: source,
+		Routes: make([]models.RouteInfo, 0, len(dists)),
+	}
+	for _, route := range routes.([]interface{}) {
+		obj := route.(*models.AllRoutes)
+		allRoutes.Routes = append(allRoutes.Routes, obj.Routes...)
+	}
+	return
+}
+
+// Return a list of all possible routes from a source to destination
+func (r *RoutesService) GetRoutes(source string, dist string) (routes *models.AllRoutes, err error) {
+	endpoint := getURL(source, dist)
+	err = http.RequestJSON(endpoint, &routes)
+	if err != nil {
+		return
+	}
+	routes.Source = source
+	for idx, _ := range routes.Routes {
+		routes.Routes[idx].Destination = dist
+	}
+	return
+}
+
+func getURL(source string, dist string) (endpoint string) {
+	endpointURL, err := url.Parse(BaseURL)
+	if err != nil {
+		log.Print("Invalid Base URL !!!")
+
+		panic("Invalid Base URL !!!")
+	}
+	endpointURL.Scheme = "http"
+	endpointURL.Path = path.Join(endpointURL.Path, source+";"+dist)
+	values := endpointURL.Query()
+	values.Set("overview", "false")
+	endpointURL.RawQuery = values.Encode()
+	endpoint = endpointURL.String()
+	return
+}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-lang-web-service/api"
+	"go-lang-web-service/handlers"
 	"log"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
  */
 
 func createServer() {
-	api.HookRoutes()
+	handlers.HookHandlers()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 func main() {
