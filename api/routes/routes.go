@@ -1,20 +1,26 @@
 package routes
 
 import (
-	"encoding/json"
 	"errors"
+	"go-lang-web-service/common"
 	routesModel "go-lang-web-service/models/routes"
 	routesService "go-lang-web-service/services/routes"
+
 	"net/http"
 	"net/url"
-	"sort"
 )
 
+var Controller = &RoutesController{}
+
+type RoutesController struct {
+	common.Controller
+}
+
 // Returns the list of Route's destances and durations starting from the given source
-func GetRoutes(w http.ResponseWriter, r *http.Request) {
-	source, dists, err := parseQuery(r.URL.Query())
+func (c *RoutesController) GetRoutes(w http.ResponseWriter, r *http.Request) {
+	source, dists, err := c.parseQuery(r.URL.Query())
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		c.SendJSON(w, r, err, http.StatusBadRequest)
 		return
 	}
 
@@ -25,19 +31,16 @@ func GetRoutes(w http.ResponseWriter, r *http.Request) {
 	for _, dist := range dists {
 		routes, err := routesService.GetAllRoutes(source, dist)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			c.SendJSON(w, r, err, http.StatusBadRequest)
 			return
 		}
 		result.Routes = append(result.Routes, routes.Routes...)
 	}
-	sort.SliceStable(result.Routes, func(i, j int) bool {
-		return result.Routes[i].Duration < result.Routes[j].Duration
-	})
-	json.NewEncoder(w).Encode(result)
+	c.SendJSON(w, r, result, http.StatusOK)
 }
 
 // Parse the Query Params map and returns the source and distinations
-func parseQuery(values url.Values) (source string, dists []string, err error) {
+func (c RoutesController) parseQuery(values url.Values) (source string, dists []string, err error) {
 	src, ok := values["src"]
 	if !ok || len(src) != 1 {
 		err = errors.New("Missing 'src' URL param")
