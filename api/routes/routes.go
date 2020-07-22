@@ -10,6 +10,7 @@ import (
 	"net/url"
 )
 
+// Controller Object for Routes model routes(endpoints)
 var Controller = &RoutesController{}
 
 type RoutesController struct {
@@ -36,7 +37,8 @@ func (c *RoutesController) GetRoutes(w http.ResponseWriter, r *http.Request) {
 		}
 		result.Routes = append(result.Routes, routes.Routes...)
 	}
-	c.SendJSON(w, r, result, http.StatusOK)
+	result.SortByDuration()
+	c.SendJSON(w, r, result.GetViewModel(), http.StatusOK)
 }
 
 // Parse the Query Params map and returns the source and distinations
