@@ -13,9 +13,19 @@ import (
 
 const BaseURL = "http://router.project-osrm.org/route/v1/driving/"
 
-var Routes = &RoutesService{}
-
+type IRoutesService interface {
+	GetAllRoutes(source string, dists []string) (allRoutes *models.AllRoutes, err error)
+	GetRoutes(source string, dist string) (routes *models.AllRoutes, err error)
+}
 type RoutesService struct {
+}
+
+var (
+	Routes IRoutesService
+)
+
+func init() {
+	Routes = &RoutesService{}
 }
 
 // Returns a list of all routes from a source to multiple possible destinations

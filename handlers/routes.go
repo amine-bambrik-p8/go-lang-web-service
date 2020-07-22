@@ -9,11 +9,21 @@ import (
 	"github.com/amine-bambrik-p8/go-lang-web-service/services"
 )
 
-// Controller Object for Routes model routes(endpoints)
-var RoutesHandler = &RoutesController{}
-
+// IRoutesController interface of the Routes handler
+type IRoutesController interface {
+	GetRoutes(w http.ResponseWriter, r *http.Request)
+}
 type RoutesController struct {
 	handlers.Controller
+}
+
+// Controller Object for Routes model endpoints/api
+var (
+	RoutesHandler IRoutesController
+)
+
+func init() {
+	RoutesHandler = &RoutesController{}
 }
 
 // Returns the list of Route's destances and durations starting from the given source
