@@ -46,7 +46,7 @@ func (r *RoutesService) GetAllRoutes(source string, dists []string) (allRoutes *
 // Return a list of all possible routes from a source to destination
 func (r *RoutesService) GetRoutes(source string, dist string) (routes *models.AllRoutes, err error) {
 	endpoint := getURL(source, dist)
-	err = http.RequestJSON(endpoint, &routes)
+	err = http.GetRequestJSON(endpoint, &routes)
 	if err != nil {
 		return
 	}
