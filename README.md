@@ -5,12 +5,12 @@ delivered to the nearest location in his neighbourhood.
 ## Table of Contents
 
 - [Installation](#installation)
-- [Project Structure](#structure)
-- [What i have learned](#whatihavelearned)
+- [Project Structure](#project-structure)
+- [What i have learned](#what-i-have-learned)
 ---
 ## Installation
 To get the project up and running you should have the following prerequisite
-- `git` which comes preinstalled with Linux & Mac on Windows you can Download Git[ Here]()
+- `git` which comes preinstalled with Linux & Mac on Windows you can Download Git [Here](https://git-scm.com/download/win)
 - `docker` you can download Docker [Here](https://www.docker.com/get-started)
 
 ### Clone
@@ -36,6 +36,6 @@ To run the `docker` container you have:
 >  Every folder contains a file .go that goes by the same name as the folder for setup logic
 
 ---
-## What i have learned form this Task
+## What i have learned
 - Go Programing Language
 - How to use Docker containers
