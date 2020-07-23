@@ -13,13 +13,17 @@ import (
 
 const BaseURL = "http://router.project-osrm.org/route/v1/driving/"
 
+// IRoutesService represent the OSRM service methods
 type IRoutesService interface {
 	GetAllRoutes(source string, dists []string) (allRoutes *models.AllRoutes, err error)
 	GetRoutes(source string, dist string) (routes *models.AllRoutes, err error)
 }
+
+// RoutesService represents available Users service struct type
 type RoutesService struct {
 }
 
+// Routes represents Routes service for interacting with the OSRM Webservice
 var (
 	Routes IRoutesService
 )

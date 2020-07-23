@@ -3,9 +3,12 @@ package http
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/amine-bambrik-p8/go-lang-web-service/models"
 )
 
 // HTTPClient interface
@@ -73,4 +76,26 @@ func GetRequestJSON(url string, response interface{}) (err error) {
 		return
 	}
 	return
+}
+
+// Takes data and status code and sends it as JSON
+func SendJSON(w http.ResponseWriter, r *http.Request, data interface{}, code int) {
+	var buf bytes.Buffer
+
+	if err, ok := data.(error); ok {
+		data = map[string]interface{}{
+			"error": err.Error(),
+		}
+	}
+	if obj, ok := data.(models.Model); ok {
+		data = obj.GetViewModel()
+	}
+	if err := json.NewEncoder(&buf).Encode(data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(code)
+	if _, err := io.Copy(w, &buf); err != nil {
+		log.Println("Respond:", err)
+	}
 }

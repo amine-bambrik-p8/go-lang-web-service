@@ -15,9 +15,11 @@ func createServer() {
 	if port == "" {
 		port = "8081"
 	}
+	//db.InitialMigration()
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 
 }
 func main() {
+
 	createServer()
 }
