@@ -16,6 +16,8 @@ func createServer() {
 		port = "8081"
 	}
 	//db.InitialMigration()
+	log.Printf("Server started on localhost:%s\n", port)
+	log.Print("Press Ctrl+C to Stop it")
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 
 }
