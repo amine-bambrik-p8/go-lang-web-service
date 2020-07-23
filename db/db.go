@@ -7,8 +7,8 @@ import (
 	"github.com/amine-bambrik-p8/go-lang-web-service/models"
 	"github.com/jinzhu/gorm"
 
-	//_ "github.com/jinzhu/gorm/dialects/sqlite"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	//_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // DB represents a struct that contains information about the database
